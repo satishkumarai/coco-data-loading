@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "BucketNotificationSetup",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketNotification",
+        "s3:PutBucketNotification"
+      ],
+      "Resource": "arn:aws:s3:::production-enterprise-data-lake-useast1"
+    },
+    {
+      "Sid": "CreateStorageRole",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:PutRolePolicy",
+        "iam:UpdateAssumeRolePolicy",
+        "iam:PutRolePermissionsBoundary"
+      ],
+      "Resource": "arn:aws:iam::*:role/snowflake.com/StorageRole-*",
+      "Condition": {
+        "StringEquals": {
+          "iam:PermissionsBoundary": "arn:aws:iam::partner:policy/permissions-boundary/snowflake.com/SnowflakeStorageRoleBoundary_v1"
+        }
+      }
+    },
+    {
+      "Sid": "AllowTagRole",
+      "Effect": "Allow",
+      "Action": "iam:TagRole",
+      "Resource": "arn:aws:iam::*:role/snowflake.com/StorageRole-*",
+      "Condition": {
+        "ForAllValues:StringEquals": {
+          "aws:TagKeys": [
+            "SnowflakeTargetBucket1",
+            "SnowflakeTargetBucket2",
+            "SnowflakeTargetBucket3",
+            "SnowflakeTargetBucket4",
+            "SnowflakeTargetBucket5",
+            "SnowflakeTargetBucket6",
+            "SnowflakeTargetBucket7",
+            "SnowflakeTargetBucket8",
+            "SnowflakeTargetBucket9",
+            "SnowflakeTargetBucket10"
+          ]
+        },
+        "Null": {
+          "aws:TagKeys": "false"
+        }
+      }
+    }
+  ]
+}
